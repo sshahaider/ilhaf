@@ -2,13 +2,22 @@ import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from '@/db';
 import { headers } from 'next/headers';
-import { siteName } from '@/config';
+import { domain, siteLink, siteName } from '@/config';
 import { admin, emailOTP } from 'better-auth/plugins';
 import { user, session, account, verification } from '@/db/schema';
 import { redirect } from 'next/navigation';
 import { sendVerificationOTPAction } from './mail';
 
+function getAuthBaseURL() {
+	const envUrl = process.env.BETTER_AUTH_URL?.trim();
+	if (envUrl && !envUrl.includes('localhost')) return envUrl;
+	if (process.env.NODE_ENV === 'production') return siteLink;
+	return envUrl || 'http://localhost:3000';
+}
+
 export const auth = betterAuth({
+	baseURL: getAuthBaseURL(),
+	trustedOrigins: [siteLink, `https://www.${domain}`],
 	plugins: [
 		admin(),
 		emailOTP({
@@ -18,6 +27,7 @@ export const auth = betterAuth({
 	],
 	advanced: {
 		cookiePrefix: siteName,
+		trustedProxyHeaders: true,
 	},
 	database: drizzleAdapter(db, {
 		provider: 'pg',

@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTrigger, SheetClose, SheetFooter
 import Logo from '../Logo';
 import { Button } from '../ui/button';
 import { authClient } from '@/lib/auth-client';
+import { SessionUser } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 
 const Links = [
@@ -48,9 +49,9 @@ const Links = [
 		icon: MessageCircleWarning,
 	},
 ];
-const SidePenal = () => {
+const SidePenal = ({ initialUser }: { initialUser?: SessionUser }) => {
 	const { data: session } = authClient.useSession();
-	const user = session?.user;
+	const user = session?.user ?? initialUser;
 
 	const router = useRouter();
 

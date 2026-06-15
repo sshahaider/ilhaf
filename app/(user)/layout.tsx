@@ -1,6 +1,7 @@
 import AuthModel from '@/components/auth/auth-model';
 import Footer from '@/components/footer';
 import Header from '@/components/header';
+import { ScrollToTop } from '@/components/scroll-to-top';
 import { cn } from '@/lib/utils';
 
 export default function UsersLayout({
@@ -10,6 +11,7 @@ export default function UsersLayout({
 }>) {
 	return (
 		<div className="relative flex min-h-screen flex-col overflow-hidden supports-[overflow:clip]:overflow-clip">
+			<ScrollToTop />
 			<Header />
 			<main
 				className={cn(

@@ -6,8 +6,11 @@ import { SearchCombobox } from './search-box';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from './theme-toggle';
 import { DesktopNav } from './desktop-nav';
+import { getCurrentUser } from '@/lib/auth';
 
-export default function Header() {
+export default async function Header() {
+	const user = await getCurrentUser();
+
 	return (
 		<header
 			className={cn(
@@ -24,8 +27,8 @@ export default function Header() {
 					<DesktopNav />
 					<ThemeToggle />
 					<SearchCombobox />
-					<UserSession />
-					<SidePenal />
+					<UserSession initialUser={user} />
+					<SidePenal initialUser={user} />
 				</div>
 			</nav>
 		</header>

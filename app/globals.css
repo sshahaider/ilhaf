@@ -132,6 +132,7 @@
 
 	html {
 		@apply scroll-smooth;
+		scroll-padding-top: 3.5rem;
 	}
 
 	body {

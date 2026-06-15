@@ -16,18 +16,19 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { getAvatarUrl, getInitialChar } from '@/lib/utils';
 import { FavoriteBeforeIcon } from '../icons';
 import { authClient } from '@/lib/auth-client';
+import { SessionUser } from '@/lib/auth';
 import { useToggle } from '@/hooks/use-toggle';
 import { useRouter } from 'next/navigation';
 
-const UserSession = () => {
+const UserSession = ({ initialUser }: { initialUser?: SessionUser }) => {
 	const { data: session, isPending } = authClient.useSession();
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [_, setAuthOpen] = useToggle('auth-modal');
-	const user = session?.user;
-	const isAdmin = session?.user.role === 'admin';
+	const user = session?.user ?? initialUser;
+	const isAdmin = user?.role === 'admin';
 	const router = useRouter();
 
-	if (isPending) {
+	if (isPending && !initialUser) {
 		return null;
 	}
 
@@ -35,7 +36,6 @@ const UserSession = () => {
 		await authClient.signOut();
 		router.refresh();
 	};
-	console.log(user);
 
 	return (
 		<div className="animate-in fade-in hidden items-center duration-800 md:flex">
