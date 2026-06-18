@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useTimescape, type Options } from 'timescape/react';
 
 import { Input } from '@/components/ui/input';
@@ -127,6 +127,16 @@ function DatetimePicker({
 		...(value && { date: value }),
 		onChangeDate: handleDateChange,
 	});
+
+	const valueTimestamp = value?.getTime();
+	useEffect(() => {
+		if (valueTimestamp === undefined || Number.isNaN(valueTimestamp)) return;
+		timescape.update((prev) => {
+			if (prev.date?.getTime() === valueTimestamp) return prev;
+			return { ...prev, date: new Date(valueTimestamp) };
+		});
+	}, [valueTimestamp, timescape.update]);
+
 	return (
 		<DatetimeGrid
 			disabled={disabled}
