@@ -187,6 +187,7 @@ const LyricsInputs = ({ form, IsDisabled, lyric }: Props) => {
 					</FormItem>
 				)}
 			/>
+			<div className="grid md:col-span-2 gap-4 md:grid-cols-2">
 			<FormField
 				control={form.control}
 				name="english"
@@ -205,6 +206,25 @@ const LyricsInputs = ({ form, IsDisabled, lyric }: Props) => {
 					</FormItem>
 				)}
 			/>
+			<FormField
+				control={form.control}
+				name="urdu"
+				render={({ field }) => (
+					<FormItem className="w-full">
+						<FormLabel>Urdu Lyrics</FormLabel>
+						<FormControl>
+							<Textarea
+								disabled={IsDisabled}
+								className="max-h-screen min-h-[70vh]"
+								placeholder="Enter Urdu Lyrics"
+								{...field}
+							/>
+						</FormControl>
+						<FormMessage />
+					</FormItem>
+				)}
+			/>
+			</div>
 		</div>
 	);
 };
